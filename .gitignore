@@ -1,0 +1,11 @@
+
+.vscode
+__pycache__
+.pytest_cache
+dist
+test.db
+sql_app.db
+env3.*
+env
+docs_build
+venv
