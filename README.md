@@ -1,8 +1,10 @@
-Como rodar
+# Como rodar
 
 no terminal digite uvicorn sql_app.main:app --reload
 
 acesse http://127.0.0.1:8000/docs para o swagger
+
+# Funcionamento
 
 Este repositório é API RESTfuls simples de um banco de dados de filmes, cada end-point será um método REST. O banco de dados será relacional, com uma simples tabela de filmes com uma foreign key pra os gêneros do filme. Mais detalhes dos endpoints:
 
@@ -24,7 +26,7 @@ Ao acessar a url "/movies/" busca todos os filmes do banco de dados, opcionalmen
 Também adicionei um endpoint parar o id dos gêneros, pois o id é necessário para as operações de write.
 
 
-# IMPLEMENTAÇÕES QUE FARIA SE TIVESSE MAIS TEMPO
+# Implementações que eu faria se tivesse mais tempo
 
 Adicionar token authentication para as operações de write
 
