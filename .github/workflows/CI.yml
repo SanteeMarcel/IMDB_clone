@@ -2,53 +2,45 @@
 
 name: CI
 
-# Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the deploy_pipeline branch
   push:
-    branches: [deploy_pipeline]
-  pull_request:
-    branches: [deploy_pipeline]
+    branches:
+      - deploy-pipeline
 
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+name: Build and Deploy a Container
+env:
+  PROJECT_ID: ${{ secrets.GCP_PROJECT }}
+  SERVICE: hello-cloud-run
+  REGION: southamerica-east1
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
+  deploy:
     runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - name: Set up gcloud Cloud SDK environment
-        # You may pin to the exact commit or the version.
-        # uses: google-github-actions/setup-gcloud@94337306dda8180d967a56932ceb4ddcf01edae7
-        uses: google-github-actions/setup-gcloud@v0.2.0
-        with:
-          # Service account email address to use for authentication. This is required
-          # for legacy .p12 keys but can be omitted for .json keys. This is usually of
-          # the format <name>@<project-id>.iam.gserviceaccount.com.
-          service_account_email: ${{ secrets.SERVICE_ACCOUNT_EMAIL }} # optional
+    - name: Checkout
+      uses: actions/checkout@v2
 
-          # Service account key to use for authentication. This should be the JSON
-          # formatted private key which can be exported from the Cloud Console. The
-          # value can be raw or base64-encoded.
-          service_account_key: ${{ secrets.SERVICE_ACCOUNT_KEY }} # optional
+    - name: Setup Cloud SDK
+      uses: google-github-actions/setup-gcloud@v0
+      with:
+        project_id: ${{ env.PROJECT_ID }}
+        service_account_key: ${{ secrets.GCP_SA_KEY }}
+        export_default_credentials: true  # Set to true to authenticate the Cloud Run action
 
-          # ID of the Google Cloud project. If provided, this will configure gcloud to
-          # use this project ID by default for commands. Individual commands can still
-          # override the project using the --project flag which takes precedence.
-          project_id: ${{ secrets.PROJECT_ID }} # optional
+    - name: Authorize Docker push
+      run: gcloud auth configure-docker
 
-          # Export the provided credentials as Google Default Application Credentials.
-          # This will make the credentials available to later steps via the
-          # GOOGLE_APPLICATION_CREDENTIALS environment variable. Future steps that
-          # consume Default Application Credentials will automatically detect and use
-          # these credentials.
-          export_default_credentials: true # optional
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
-      - name: Deploy to Cloud Run
-        uses: google-github-actions/deploy-cloudrun@v0.3.0
+    - name: Build and Push Container
+      run: |-
+        docker build -t gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{  github.sha }} sql_app/
+        docker push gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{  github.sha }}
+    - name: Deploy to Cloud Run
+      id: deploy
+      uses: google-github-actions/deploy-cloudrun@v0
+      with:
+        service: ${{ env.SERVICE }}
+        image: gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{  github.sha }}
+        region: ${{ env.REGION }}
+
+    - name: Show Output
+      run: echo ${{ steps.deploy.outputs.url }}
