@@ -1,9 +1,10 @@
+name: CI
+
 on:
   push:
     branches:
       - deploy-pipeline
 
-name: CI
 env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT }}
   SERVICE: hello-cloud-run
