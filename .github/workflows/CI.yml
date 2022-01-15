@@ -7,7 +7,7 @@ name: Build and Deploy a Container
 env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT }}
   SERVICE: hello-cloud-run
-  REGION: us-central1
+  REGION: southamerica-east1
 
 jobs:
   deploy:
