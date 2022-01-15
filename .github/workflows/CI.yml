@@ -1,12 +1,13 @@
 on:
   push:
     branches:
-      - deploy-pipeline
+      - deploy_pipeline
 
+name: Build and Deploy a Container
 env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT }}
   SERVICE: hello-cloud-run
-  REGION: southamerica-east1
+  REGION: us-central1
 
 jobs:
   deploy:
@@ -27,7 +28,7 @@ jobs:
 
     - name: Build and Push Container
       run: |-
-        docker build -t gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{  github.sha }} sql_app/
+        docker build -t gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{  github.sha }} example-app/
         docker push gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{  github.sha }}
     - name: Deploy to Cloud Run
       id: deploy
