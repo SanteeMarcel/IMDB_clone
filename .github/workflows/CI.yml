@@ -3,7 +3,7 @@ on:
     branches:
       - deploy-pipeline
 
-name: Build and Deploy a Container
+name: CI
 env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT }}
   SERVICE: hello-cloud-run
