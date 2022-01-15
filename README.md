@@ -15,7 +15,7 @@ Alternativa online:
 https://imdbcloneapp1-z5tw3oezda-rj.a.run.app/docs
 Versão subida pelo CLI da GCP da main branch
 
-https://hello-cloud-run-z5tw3oezda-uc.a.run.app/docs
+https://hello-cloud-run-z5tw3oezda-rj.a.run.app/docs
 Versão puxada automaticamente pelo github actions
 
 # Funcionamento
