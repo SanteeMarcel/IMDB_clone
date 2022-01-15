@@ -49,3 +49,5 @@ Adicionar sistema de log e monitoramento da API
 Um filme poderia ter múltiplos gêneros e também dá pra aprimorar o end-point para buscar todos os filmes de cada gênero.
 
 Associar uma imagem a cada filme, para poder ser exibido com mais facilidade no front-end.
+
+Adicionaria REDIS para cache, assim diminuindo a quantidade de requisições diretas no banco, que faria bastante diferença em alta escala. O REDIS ainda poderia ser utilizado como message broker num sistema de arquitetura de micro-serviços no futuro.
