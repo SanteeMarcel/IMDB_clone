@@ -24,8 +24,7 @@ python-dotenv==0.19.2
 PyYAML==6.0
 requests==2.27.1
 sniffio==1.2.0
-# Editable Git install with no remote (sql-app==0.0.0)
--e .
+# --no-index --find-links .
 SQLAlchemy==1.4.29
 starlette==0.17.1
 toml==0.10.2
@@ -34,3 +33,4 @@ urllib3==1.26.8
 uvicorn==0.16.0
 watchgod==0.7
 websockets==10.1
+wheel==0.33.6
