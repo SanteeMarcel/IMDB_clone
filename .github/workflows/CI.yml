@@ -35,7 +35,7 @@ jobs:
           # Service account key to use for authentication. This should be the JSON
           # formatted private key which can be exported from the Cloud Console. The
           # value can be raw or base64-encoded.
-          service_account_key: ${{ secrets.SERVICE_ACCOUNT_KEY }} # optional
+          # service_account_key: ${{ secrets.SERVICE_ACCOUNT_KEY }} # optional
 
           # ID of the Google Cloud project. If provided, this will configure gcloud to
           # use this project ID by default for commands. Individual commands can still
