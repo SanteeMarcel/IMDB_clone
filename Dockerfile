@@ -17,7 +17,9 @@ RUN pip install -r requirements.txt
 
 COPY . .
 
-CMD ["uvicorn", "sql_app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# CMD ["uvicorn", "sql_app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+
+CMD exec gunicorn --bind :$PORT --workers 1 --worker-class uvicorn.workers.UvicornWorker  --threads 8 sql_app.main:app
 
 # If running behind a proxy like Nginx or Traefik add --proxy-headers
 # CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "80", "--proxy-headers"]

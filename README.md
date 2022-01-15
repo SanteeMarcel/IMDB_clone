@@ -10,6 +10,10 @@ no terminal digite docker-compose up
 
 acesse http://localhost:8000/docs
 
+Alternativa online:
+
+https://imdbcloneapp1-z5tw3oezda-rj.a.run.app/docs
+
 # Funcionamento
 
 Este repositório é API RESTfuls simples de um banco de dados de filmes, cada end-point será um método REST. O banco de dados será relacional, com uma simples tabela de filmes com uma foreign key pra os gêneros do filme. Mais detalhes dos endpoints:
