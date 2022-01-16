@@ -53,3 +53,5 @@ Associar uma imagem a cada filme, para poder ser exibido com mais facilidade no 
 Adicionaria REDIS para cache, assim diminuindo a quantidade de requisições diretas no banco, que faria bastante diferença em alta escala. O REDIS ainda poderia ser utilizado como message broker num sistema de arquitetura de micro-serviços no futuro.
 
 Integrate unit testing to the deployment workflow
+
+Implementar delete lógico, alterar os modelos para ter a chave is_active, fazer queries e updates apenas em registros ativos.
