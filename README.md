@@ -37,8 +37,7 @@ Apaga o filme do banco de dados pelo id
 Get - Read
 Ao acessar a url "/movies/" busca todos os filmes do banco de dados, opcionalmente pode fazer um query passando "?q=" e por um limite passando um "?limit="
 
-Também adicionei um endpoint parar o id dos gêneros, pois o id é necessário para as operações de write.
-
+Também adicionei um endpoint parar o id dos gêneros, pois o id é necessário para algumas operações.
 
 # Implementações que eu faria se tivesse mais tempo
 
