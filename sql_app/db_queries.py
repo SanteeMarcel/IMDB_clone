@@ -1,13 +1,5 @@
-from re import L
 from sqlalchemy.orm import Session
 from . import models, schemas
-from logging.config import dictConfig
-import logging
-from .log_config import logging_schema_db
-
-
-dictConfig(logging_schema_db)
-logger = logging.getLogger("db_logger")
 
 
 def create_movie(db: Session, movie: schemas.MovieBase):
@@ -20,7 +12,6 @@ def create_movie(db: Session, movie: schemas.MovieBase):
     db.add(db_movie)
     db.commit()
     db.refresh(db_movie)
-    logger.info(f"Movie {db_movie.id} created - {db_movie.title} - {db_movie.year}")
     return db_movie
 
 
@@ -34,7 +25,6 @@ def update_movie_complete(db: Session, movie_id: int, movie: schemas.MovieBase):
         db_movie.genre_id = movie.genre_id
         db.commit()
         db.refresh(db_movie)
-        logger.info(f"Movie {db_movie.id} updated - {db_movie.title} - {db_movie.year}")
         return db_movie
     return None
 
@@ -53,7 +43,6 @@ def update_movie_partial(db: Session, movie_id: int, movie: schemas.MovieBase):
             db_movie.genre_id = movie.genre_id
         db.commit()
         db.refresh(db_movie)
-        logger.info(f"Movie {db_movie.id} updated - {db_movie.title} - {db_movie.year}")
         return db_movie
     return None
 
@@ -65,7 +54,6 @@ def delete_movie(db: Session, movie_id: int):
         db_movie.is_active = False
         db.commit()
         db.refresh(db_movie)
-        logger.info(f"Movie {db_movie.id} deleted - {db_movie.title} - {db_movie.year}")
         return db_movie
     return None
 
