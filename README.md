@@ -50,6 +50,4 @@ Também adicionei um endpoint parar o id dos gêneros, pois o id é necessário 
 
 Adicionar token authentication para as operações de write
 
-Adicionar sistema de log e monitoramento da API
-
 Um filme poderia ter múltiplos gêneros e também dá pra aprimorar o end-point para buscar todos os filmes de cada gênero.
