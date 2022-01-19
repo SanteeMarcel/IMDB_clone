@@ -1,5 +1,13 @@
+from re import L
 from sqlalchemy.orm import Session
 from . import models, schemas
+from logging.config import dictConfig
+import logging
+from .log_config import logging_schema_db
+
+
+dictConfig(logging_schema_db)
+logger = logging.getLogger("db_logger")
 
 
 def create_movie(db: Session, movie: schemas.MovieBase):
@@ -12,12 +20,13 @@ def create_movie(db: Session, movie: schemas.MovieBase):
     db.add(db_movie)
     db.commit()
     db.refresh(db_movie)
+    logger.info(f"Movie {db_movie.id} created - {db_movie.title} - {db_movie.year}")
     return db_movie
 
 
 def update_movie_complete(db: Session, movie_id: int, movie: schemas.MovieBase):
     db_movie = db.query(models.Movie).filter(
-        models.Movie.id == movie_id).first()
+        models.Movie.id == movie_id, models.Movie.is_active).first()
     if db_movie:
         db_movie.title = movie.title
         db_movie.rating = movie.rating
@@ -25,13 +34,14 @@ def update_movie_complete(db: Session, movie_id: int, movie: schemas.MovieBase):
         db_movie.genre_id = movie.genre_id
         db.commit()
         db.refresh(db_movie)
+        logger.info(f"Movie {db_movie.id} updated - {db_movie.title} - {db_movie.year}")
         return db_movie
     return None
 
 
 def update_movie_partial(db: Session, movie_id: int, movie: schemas.MovieBase):
     db_movie = db.query(models.Movie).filter(
-        models.Movie.id == movie_id).first()
+        models.Movie.id == movie_id, models.Movie.is_active).first()
     if db_movie:
         if movie.title:
             db_movie.title = movie.title
@@ -43,30 +53,33 @@ def update_movie_partial(db: Session, movie_id: int, movie: schemas.MovieBase):
             db_movie.genre_id = movie.genre_id
         db.commit()
         db.refresh(db_movie)
+        logger.info(f"Movie {db_movie.id} updated - {db_movie.title} - {db_movie.year}")
         return db_movie
     return None
 
 
 def delete_movie(db: Session, movie_id: int):
     db_movie = db.query(models.Movie).filter(
-        models.Movie.id == movie_id).first()
+        models.Movie.id == movie_id, models.Movie.is_active).first()
     if db_movie:
-        db.delete(db_movie)
+        db_movie.is_active = False
         db.commit()
+        db.refresh(db_movie)
+        logger.info(f"Movie {db_movie.id} deleted - {db_movie.title} - {db_movie.year}")
         return db_movie
     return None
 
 
 def get_movie_by_id(db: Session, movie_id: int):
-    return db.query(models.Movie).filter(models.Movie.id == movie_id).first()
+    return db.query(models.Movie).filter(models.Movie.id == movie_id, models.Movie.is_active).first()
 
 
 def get_movies(db: Session, limit: int = 100):
-    return db.query(models.Movie).limit(limit).all()
+    return db.query(models.Movie).filter(models.Movie.is_active).limit(limit).all()
 
 
 def get_movies_by_query(db: Session, q: str, limit: int = 100):
-    return db.query(models.Movie).filter(models.Movie.title.ilike(f"%{q}%")).limit(limit).all()
+    return db.query(models.Movie).filter(models.Movie.title.ilike(f"%{q}%"), models.Movie.is_active).limit(limit).all()
 
 
 def populate_genres(db: Session):
@@ -96,4 +109,4 @@ def populate_genres(db: Session):
 
 
 def get_genres(db: Session):
-    return db.query(models.Genre).all()
+    return db.query(models.Genre).filter(models.Genre.is_active).all()
