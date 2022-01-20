@@ -61,7 +61,7 @@ def client(session):
 
 def test_get_no_movies(client):
     response = client.get("/api/v1/movies/")
-    assert response.status_code == 200
+    assert response.status_code == 204
     assert response.json() == []
 
 
@@ -119,21 +119,42 @@ def test_should_update_movie_partial(client, session):
                                "year": 2001, "rating": 9, "genre_id": 1}
 
 
-def test_should_delete_movie(client, session):
+def test_should_not_allow_unauthorized_access(client, session):
     session.add(models.Genre(name="Action"))
     session.add(models.Movie(title="Movie 1", year=2000, rating=8, genre_id=1))
     session.commit()
     response = client.delete("/api/v1/movies/1")
+    assert response.status_code == 401
+    assert response.json() == {"detail": "Not authenticated"}
+
+
+def test_should_delete_movie(client, session):
+    session.add(models.Genre(name="Action"))
+    session.add(models.Movie(title="Movie 1", year=2000, rating=8, genre_id=1))
+    session.commit()
+    token_response = client.post(
+        "/api/v1/token", data={"grant_type": "password", "username": "admin", "password": "secret"})
+    assert token_response.status_code == 200
+    assert token_response.json()["access_token"] is not None
+    assert token_response.json()["token_type"] == "bearer"
+    response = client.delete(
+        "/api/v1/movies/1", headers={"Authorization": f"Bearer {token_response.json()['access_token']}"})
     assert response.status_code == 200
     assert response.json() == {"id": 1, "title": "Movie 1",
                                "year": 2000, "rating": 8, "genre_id": 1}
 
 
-def test_should_not_delete_movie(client, session):
+def test_should_not_find_movie_to_delete(client, session):
     session.add(models.Genre(name="Action"))
     session.add(models.Movie(title="Movie 1", year=2000, rating=8, genre_id=1))
     session.commit()
-    response = client.delete("/api/v1/movies/2")
+    token_response = client.post(
+        "/api/v1/token", data={"grant_type": "password", "username": "admin", "password": "secret"})
+    assert token_response.status_code == 200
+    assert token_response.json()["access_token"] is not None
+    assert token_response.json()["token_type"] == "bearer"
+    response = client.delete(
+        "/api/v1/movies/2", headers={"Authorization": f"Bearer {token_response.json()['access_token']}"})
     assert response.status_code == 404
     assert response.json() == {"detail": "Missing movie with id 2"}
 

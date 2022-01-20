@@ -17,7 +17,7 @@ def create_movie(db: Session, movie: schemas.MovieBase):
 
 def update_movie_complete(db: Session, movie_id: int, movie: schemas.MovieBase):
     db_movie = db.query(models.Movie).filter(
-        models.Movie.id == movie_id).first()
+        models.Movie.id == movie_id, models.Movie.is_active).first()
     if db_movie:
         db_movie.title = movie.title
         db_movie.rating = movie.rating
@@ -31,7 +31,7 @@ def update_movie_complete(db: Session, movie_id: int, movie: schemas.MovieBase):
 
 def update_movie_partial(db: Session, movie_id: int, movie: schemas.MovieBase):
     db_movie = db.query(models.Movie).filter(
-        models.Movie.id == movie_id).first()
+        models.Movie.id == movie_id, models.Movie.is_active).first()
     if db_movie:
         if movie.title:
             db_movie.title = movie.title
@@ -49,24 +49,25 @@ def update_movie_partial(db: Session, movie_id: int, movie: schemas.MovieBase):
 
 def delete_movie(db: Session, movie_id: int):
     db_movie = db.query(models.Movie).filter(
-        models.Movie.id == movie_id).first()
+        models.Movie.id == movie_id, models.Movie.is_active).first()
     if db_movie:
-        db.delete(db_movie)
+        db_movie.is_active = False
         db.commit()
+        db.refresh(db_movie)
         return db_movie
     return None
 
 
 def get_movie_by_id(db: Session, movie_id: int):
-    return db.query(models.Movie).filter(models.Movie.id == movie_id).first()
+    return db.query(models.Movie).filter(models.Movie.id == movie_id, models.Movie.is_active).first()
 
 
 def get_movies(db: Session, limit: int = 100):
-    return db.query(models.Movie).limit(limit).all()
+    return db.query(models.Movie).filter(models.Movie.is_active).limit(limit).all()
 
 
 def get_movies_by_query(db: Session, q: str, limit: int = 100):
-    return db.query(models.Movie).filter(models.Movie.title.ilike(f"%{q}%")).limit(limit).all()
+    return db.query(models.Movie).filter(models.Movie.title.ilike(f"%{q}%"), models.Movie.is_active).limit(limit).all()
 
 
 def populate_genres(db: Session):
@@ -96,4 +97,4 @@ def populate_genres(db: Session):
 
 
 def get_genres(db: Session):
-    return db.query(models.Genre).all()
+    return db.query(models.Genre).filter(models.Genre.is_active).all()
