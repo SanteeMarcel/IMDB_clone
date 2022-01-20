@@ -82,7 +82,7 @@ async def update_movie(movie_id: int, movie: schemas.MovieBase, response: Respon
 @app.patch("/api/v1/movies/{movie_id}", status_code=HTTP_202_ACCEPTED, response_model=schemas.Movie)
 async def partial_update_movie(movie_id: int, response: Response, request: Request, title: str | None = None, rating: float | None = None, year: int | None = None, genre_id: int | None = None, db: Session = Depends(get_db)):
     logger.info(
-        f"{request.method} {request.url} {request.headers} {await request.json()}")
+        f"{request.method} {request.url} {request.headers}")
     db_movie = db_queries.get_movie_by_id(db, movie_id)
     if not db_movie:
         raise HTTPException(

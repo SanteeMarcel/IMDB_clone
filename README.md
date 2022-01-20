@@ -6,6 +6,8 @@ Crie e ative um venv. (Opcional e dependente do sistema operacional)
 
 pip install -r requirements.txt
 
+pytest unit_tests\api_tests.py
+
 uvicorn sql_app.main:app --reload
 
 acesse http://127.0.0.1:8000/docs para o swagger
