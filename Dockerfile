@@ -9,7 +9,7 @@ ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 RUN apk update && apk add python3-dev \
                         gcc \
                         libc-dev\
-                        && apt install libffi-dev
+                        libffi-dev
 # Install dependencies:
 COPY requirements.txt .
 
