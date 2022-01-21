@@ -42,9 +42,9 @@ Patch - Updade
 Update movie data partially.
 
 Delete - Delete
-Delete movie from database(logical delete)
+Delete movie from database. Logical delete and requires password flow Oauth2 authentication.
 
 Get - Read
 Accessing the pure url "/movies/" get all movies from db, optionally you can have the parameters "?q=" for quering and "?limit=" for limiting the amount of results.
 
-There's another endpoint for getting genres.
+There's another endpoint for getting genres. And endpoints implementing Oauth2 authentication.
