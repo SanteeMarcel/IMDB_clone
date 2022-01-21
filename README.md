@@ -45,12 +45,17 @@ Apaga o filme do banco de dados pelo id
 Get - Read
 Ao acessar a url "/movies/" busca todos os filmes do banco de dados, opcionalmente pode fazer um query passando "?q=" e por um limite passando um "?limit="
 
-Também adicionei um endpoint parar o id dos gêneros, pois o id é necessário para as operações de write.
-
+Também adicionei um endpoint parar o id dos gêneros, pois o id é necessário para algumas operações.
 
 # Implementações que eu faria se tivesse mais tempo
 
 Adicionar token authentication para as operações de write
+
+Um filme poderia ter múltiplos gêneros e também dá pra aprimorar o end-point para buscar todos os filmes de cada gênero.
+
+Associar uma imagem a cada filme, para poder ser exibido com mais facilidade no front-end.
+
+Adicionaria REDIS para cache, assim diminuindo a quantidade de requisições diretas no banco, que faria bastante diferença em alta escala. O REDIS ainda poderia ser utilizado como message broker num sistema de arquitetura de micro-serviços no futuro.
 
 Um filme poderia ter múltiplos gêneros e também dá pra aprimorar o end-point para buscar todos os filmes de cada gênero.
 
