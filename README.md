@@ -48,17 +48,3 @@ Get - Read
 Accessing the pure url "/movies/" get all movies from db, optionally you can have the parameters "?q=" for quering and "?limit=" for limiting the amount of results.
 
 There's another endpoint for getting genres.
-
-# Implementações que eu faria se tivesse mais tempo
-
-Um filme poderia ter múltiplos gêneros e também dá pra aprimorar o end-point para buscar todos os filmes de cada gênero.
-
-Associar uma imagem de cartaz a cada filme, para poder ser exibido com mais facilidade no front-end.
-
-Adicionaria REDIS para cache, assim diminuindo a quantidade de requisições diretas no banco, que faria bastante diferença em alta escala. O REDIS ainda poderia ser utilizado como message broker num sistema de arquitetura de micro-serviços no futuro.
-
-Um filme poderia ter múltiplos gêneros e também dá pra aprimorar o end-point para buscar todos os filmes de cada gênero.
-
-Integrate unit testing to the deployment workflow
-
-Think about more validations on the input.
