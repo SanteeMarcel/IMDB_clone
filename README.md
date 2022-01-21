@@ -1,6 +1,14 @@
 # Como rodar
 
-no terminal digite uvicorn sql_app.main:app --reload
+No terminal do diretorio do projeto:
+
+Crie e ative um venv. (Opcional e dependente do sistema operacional)
+
+pip install -r requirements.txt
+
+pytest unit_tests\api_tests.py
+
+uvicorn sql_app.main:app --reload
 
 acesse http://127.0.0.1:8000/docs para o swagger
 
@@ -43,7 +51,11 @@ Também adicionei um endpoint parar o id dos gêneros, pois o id é necessário 
 
 Adicionar token authentication para as operações de write
 
-Adicionar sistema de log e monitoramento da API
+Um filme poderia ter múltiplos gêneros e também dá pra aprimorar o end-point para buscar todos os filmes de cada gênero.
+
+Associar uma imagem a cada filme, para poder ser exibido com mais facilidade no front-end.
+
+Adicionaria REDIS para cache, assim diminuindo a quantidade de requisições diretas no banco, que faria bastante diferença em alta escala. O REDIS ainda poderia ser utilizado como message broker num sistema de arquitetura de micro-serviços no futuro.
 
 Um filme poderia ter múltiplos gêneros e também dá pra aprimorar o end-point para buscar todos os filmes de cada gênero.
 
